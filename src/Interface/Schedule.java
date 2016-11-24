@@ -7,32 +7,32 @@ import Data.DataQuery;
 
 public class Schedule 
 {
-	private static Integer[] Order;
+	public Integer[] Order;
 	
-	public static void generateFull()
-	{	
-		DataCount CountAll = new DataCount("");
-		Integer Count = CountAll.count();
-		Order = new Integer[Count+1];
-
-		for (int i = 1; i <= Count; i++)			{Order[i] = i;} 
-
-		Collections.shuffle(Arrays.asList(Order));
-	}
-
-	public static void generateSubject(String Subject)
+	public Schedule(){}
+	
+	public void generate(String SQL)
 	{
-		DataCount CountSubject = new DataCount("WHERE Subject = '"+Subject+"'");
-		Integer Count = CountSubject.count();
-		Order = new Integer[Count+1];
-		for (int i = 1; i <= Count; i++)			{Order[i] = DataQuery.queryId(Subject)[i-1];}
+		DataCount CountSubject = new DataCount();
+		SQLMaster sql = new SQLMaster(true);
+		String[] Input = {"c","s","Irish","/","s","Maths"};
+		sql.addtoArray(Input);
+		Integer Count = CountSubject.count(sql.generateSQL());
+		this.Order = new Integer[Count+1];
+		DataQuery Array = new DataQuery();
+		Array.queryArrayInt(sql.generateSQL(),"rowid");
+		for (int i = 1; i <= Count; i++)			{Order[i] =  Array.ArrayInt [i-1];}
 		
 		Collections.shuffle(Arrays.asList(Order));
 	}
 	
-	public static Integer decrypt(Integer x)	{return Order[x];}
-	public static Integer length()				{return Order.length - 1;}
+	public Integer decrypt(Integer x)	{return Order[x];}
+	public Integer length()				{return Order.length - 1;}
 	
 	public static void main(String[] args)
-	{Schedule.generateSubject("Maths");}
+	{
+		Schedule boi = new Schedule();
+		boi.generate("kill me please");
+		System.out.println(boi.Order);
+	}
 }

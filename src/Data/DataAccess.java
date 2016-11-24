@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DataAccess {
 
-	public static Connection connect() 
+	public Connection connect() 
 		{
         String url = "jdbc:sqlite:SBData1.db";
         Connection conn = null;

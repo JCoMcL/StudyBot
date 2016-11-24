@@ -2,23 +2,19 @@ package Data;
 
 import java.sql.*;
 
-public class DataQuery {
-	public String sql;
-	public DataQuery(String Select, String Where, String Equals)
-	{
-		sql = "SELECT "+Select+" FROM Table1 WHERE "+Where+" = "+Equals;
-	}
-	public String queryString(Integer row) 
+public class DataQuery extends DataAccess
+{	
+	public Integer[] ArrayInt;
+
+	public String queryString(String sql, String field) 
     {
         String result = null;
- 
         try (
-        	Connection conn = DataAccess.connect();	
+        	Connection conn = this.connect();	
         	Statement stmt = conn.prepareStatement(sql);
         	ResultSet rs  = stmt.executeQuery(sql);
         	){
-           	result = rs.getString("Desc1");
-           	
+           	result = rs.getString(field);
            	stmt.close();
             conn.close();
        		} 
@@ -30,30 +26,27 @@ public class DataQuery {
 		return result;  
     }
 		
-	public Integer[] queryArrayInt(String Subject) 
-    {
-		DataCount countSubject = new DataCount("WHERE Subject = '"+Subject+"'");
-        Integer[] result = new Integer[countSubject.count()];
-        try (Connection conn = DataAccess.connect();	PreparedStatement pstmt = conn.prepareStatement(sql)) 
-        	{
-           		pstmt.setString(1, Subject);
-           		ResultSet rs  = pstmt.executeQuery();
+	public void queryArrayInt(String sql, String field) 
+    {	
+		 try (
+		        Connection conn = this.connect();	
+		        Statement stmt = conn.prepareStatement(sql);
+		        ResultSet rs  = stmt.executeQuery(sql);
+		        ){
            		Integer i = 0;
+           		this.ArrayInt = new Integer[rs.getFetchSize()];
            		while(rs.next())
 				{
-					result[i] = rs.getInt("rowid");
+					ArrayInt[i] = rs.getInt(field);
 					i++;
 				}
-           		pstmt.close();
+           		stmt.close();
            		conn.close();
        		} 
         catch (SQLException e) 
     	{
     	//System.err.println( e.getClass().getName() + ": " + e.getMessage() );
     	//System.exit(0);
-    	}
-        return result;
+    	}   
     }
-	public static void main(String[] args) 
-	{}
 }

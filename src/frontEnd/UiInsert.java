@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import Data.DataInsert;
+import Interface.SQLMaster;
 
 public class UiInsert
 {
@@ -99,16 +100,13 @@ public class UiInsert
 	private class clickListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e) 
-		{
-			DataInsert in = new DataInsert();
-			
-			String Desc1 	= one.getText();
-			String Desc2 	= two.getText();
-			String Subject 	= tri.getText();
-			String Topic 	= four.getText();
-			String Type		= five.getText();
-			
-			in.insert(Desc1, Desc2, Subject, Topic, Type);
+		{	
+			SQLMaster sql = new SQLMaster(true);
+				String input = sql.generateInput(one.getText(), two.getText(), tri.getText(), four.getText(), five.getText());
+				String[] array = {"i","I",input};
+				sql.addtoArray(array);
+				DataInsert in = new DataInsert();
+					in.insert(sql.generateSQL());
 			
 			one.setText("");
 			two.setText("");

@@ -5,14 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DataCheck 
+public class DataCheck extends DataAccess
 {
-	public static Boolean Match(Integer Id, String Desc2)
+	public Boolean Match(Integer Id, String Desc2)
 	{
 		String sql = "SELECT COUNT(*) AS length FROM Table1 WHERE rowid = ? AND Desc2 = ?";
         Boolean result = true;
 		
-		try (Connection conn = DataAccess.connect();	PreparedStatement pstmt = conn.prepareStatement(sql)) 
+		try (Connection conn = this.connect();	PreparedStatement pstmt = conn.prepareStatement(sql)) 
     	{
 			pstmt.setString(1, ""+Id);
 			pstmt.setString(2, Desc2);

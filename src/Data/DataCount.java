@@ -3,14 +3,11 @@ package Data;
 import java.sql.*;
 
 public class DataCount extends DataAccess
-{	
-	private String sql =	"SELECT COUNT(*) AS length FROM Table1 ";
-	public DataCount(String Parameters)	{sql+=Parameters;}
-	
-	public Integer count()
+{		
+	public Integer count(String sql)
 	{
         Integer Count = null;
-        try (Connection conn = DataAccess.connect(); Statement stmt  = conn.createStatement(); ResultSet rs    = stmt.executeQuery(sql))
+        try (Connection conn = this.connect(); Statement stmt  = conn.createStatement(); ResultSet rs    = stmt.executeQuery(sql))
         	{
         	Count = rs.getInt("length");
         	System.out.println(Count);
@@ -20,5 +17,4 @@ public class DataCount extends DataAccess
     		{System.err.println( e.getClass().getName() + ": " + e.getMessage() );}
         return Count;
     }
-	public static void main(String args[]){}
 }
